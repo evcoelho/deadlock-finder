@@ -17,6 +17,7 @@ void *thread1_func(void *arg){
 		sem_wait(&mutex1);
 		printf("T1 em execucao\n");
 		sem_wait(&mutex2);
+		
 		sem_post(&mutex1);
 		sem_post(&mutex2);
 	}
