@@ -14,10 +14,12 @@ int T, U;
 
 void *thread1_func(void *arg){
 	while(1){
+		printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)&mutex1, pthread_self());
 		sem_wait(&mutex1);
 		printf("T1 em execucao\n");
+		//printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)mutex1, pthread_self());
 		sem_wait(&mutex2);
-		
+
 		sem_post(&mutex1);
 		sem_post(&mutex2);
 	}
@@ -28,10 +30,12 @@ void *thread1_func(void *arg){
 
 void *thread2_func(void *arg){
 	while(1){
+		printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)&mutex2, pthread_self());
 		sem_wait(&mutex2);
 		printf("T2 em execucao\n");
+		//printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)mutex2, pthread_self());
 		sem_wait(&mutex1);
-		
+
 		sem_post(&mutex1);
 		sem_post(&mutex2);
 	}
@@ -46,11 +50,11 @@ int main(void) {
 	sem_init(&mutex1, 0, 1);
 	sem_init(&mutex2, 0, 1);
 
-	pthread_create(&(threads[1]), NULL, thread1_func, NULL);
-	pthread_create(&(threads[2]), NULL, thread2_func, NULL);
+	pthread_create(&(threads[0]), NULL, thread1_func, NULL);
+	pthread_create(&(threads[1]), NULL, thread2_func, NULL);
 
+	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
-	pthread_join(threads[2], NULL);
 
 	return 0;
 }
