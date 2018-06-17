@@ -227,15 +227,15 @@ int (*_sem_wait)(sem_t *) = NULL;
 
 int sem_wait(sem_t *sem) {
 	int r;
+  if (aux == 0){
+    aux = 1;
+    tgrafo_inicia(&grafo, MaxNumVertices);
+  }
 	if (!_sem_wait) {
 		_sem_wait = dlsym(RTLD_NEXT, "sem_wait");
 		/* Irá apontar para o sem_wait original*/
 	}
 	if (temCiclo() == false) {
-		if (aux == 0){
-			aux = 1;
-			tgrafo_inicia(&grafo, MaxNumVertices);
-		}
 		tgrafo_inserearesta(&grafo, converteVertice((size_t)sem), converteVertice(pthread_self()));
 		printf("\t Semaforo %ld na thread %ld\n", (size_t)sem, pthread_self());
 		printf("\t Dentro da sem_wait()... faça o que quiser aqui!\n");
