@@ -13,8 +13,10 @@
 
 #define MaxNumVertices  100
 #define MaxNumArestas   4500
-#define FALSE           0
-#define TRUE            1
+
+typedef int bool;
+#define false           0
+#define true            1
 
 #define MAX 100;
 
@@ -227,7 +229,7 @@ int sem_wait(sem_t *sem) {
 		_sem_wait = dlsym(RTLD_NEXT, "sem_wait");
 		/* Irá apontar para o sem_wait original*/
 	}
-	if (temCiclo() == FALSE) {
+	if (temCiclo() == false) {
 		if (aux == 0){
 			aux = 1;
 			tgrafo_inicia(&grafo, MaxNumVertices);
