@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <semaphore.h>
 #include <dlfcn.h>
+#include <sys/types.h>
+#include <signal.h>
 
 #define MaxNumVertices  100
 #define MaxNumArestas   4500
@@ -241,6 +243,7 @@ int sem_wait(sem_t *sem) {
 		return(r);
 	}else{
 		printf("\t Encontrou deadlock\n");
-		return 0;
+		exit(127);
+        return 0;
 	}
 }
