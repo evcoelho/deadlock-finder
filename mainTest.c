@@ -94,7 +94,7 @@ void lista_insere(TGrafo *pgrafo, int u, int v){
 }
 void tgrafo_inicia(TGrafo *pgrafo, int NVertices){
     int i;
-    quantidade_de_vertices = 0;  //inicializa aqui o tamanho da lista de conversão
+    quantidade_de_vertices = 1;  //inicializa aqui o tamanho da lista de conversão
     pgrafo->NVertices=NVertices;
     pgrafo->NArestas=0;
     
