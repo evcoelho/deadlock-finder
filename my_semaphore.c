@@ -39,8 +39,6 @@ typedef struct{
     TAresta aresta;
 }TAdjacencia;
 
-typedef struct
-
 typedef struct{
     TLista *Adj[100];
     int NVertices;
@@ -73,7 +71,7 @@ void lista_insere(TGrafo *pgrafo, int u, int v){
     }
     else
     {
-        pgrafo->Adj[u-1]->ultimo->proximo=(struct tcelula*)nova;
+        pgrafo->Adj[u-1]->ultimo->proximo=nova;
         pgrafo->Adj[u-1]->ultimo=nova;
     }
     pgrafo->Adj[u-1]->tamanho++;
@@ -96,6 +94,49 @@ int tgrafo_inserearesta(TGrafo *pgrafo, int u, int v){
     pgrafo->NArestas++;
     return 0;
 }
+/*
+// do a depth first search
+void do_dfs(Vertex *vertex, int* count) {
+    Node* p = vertex->list;
+    vertex->mark = ++(*count);
+    visit (vertex);
+    while (p != 0) {
+        if (!p->vertex->mark) {
+            do_dfs (p->vertex, count);
+        }
+        p = p->next;
+    }
+}
+void dfs(Vertex *graph[]) {
+    int i;
+    int count = 0;
+    // set all to unvisited
+    for (i = 0; i < NUM_VERTEX; i ++) {
+        graph[i]->mark = 0;
+    }
+    // each vertex dfs it
+    for (i = 0; i < NUM_VERTEX; i ++) {
+        if (graph[i]->mark == 0) {
+            do_dfs (graph[i], &count);
+        }
+    }
+}*/
+
+long vertices[MaxNumVertices];
+int quantidade_de_vertices = 0;
+
+int converteVertice(long valor_do_vertice){
+    int i;
+    for(i = 0; i < quantidade_de_vertices; i++){
+        if(vertices[i] == valor_do_vertice){
+            quantidade_de_vertices++;
+            return i;
+        }
+    }
+    quantidade_de_vertices++;
+    vertices[i] = valor_do_vertice;
+    return i;
+}
 
 TGrafo grafo;
 int aux = 0;
@@ -108,13 +149,12 @@ int sem_wait(sem_t *sem) {
 		_sem_wait = dlsym(RTLD_NEXT, "sem_wait");
 		/* Irá apontar para o sem_wait original*/
 	}
-
 	if (aux == 0){
 		aux = 1;
-		tgrafo_inicia(&grafo);
+		tgrafo_inicia(&grafo, MaxNumVertices);
 	}
-	tgrafo_inserearesta(&grafo, ((size_t)%10), (pthread_self()%10));
-	printf("\t Semaforo %d na thread %d\n", (size_t)sem, pthread_self());
+	tgrafo_inserearesta(&grafo, converteVertice((size_t)sem), converteVertice(pthread_self()));
+	printf("\t Semaforo %ld na thread %ld\n", (size_t)sem, pthread_self());
 	printf("\t Dentro da sem_wait()... faça o que quiser aqui!\n");
 	r = _sem_wait(sem);
 	return(r);

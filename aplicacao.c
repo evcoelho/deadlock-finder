@@ -14,10 +14,10 @@ int T, U;
 
 void *thread1_func(void *arg){
 	while(1){
-		printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)&mutex1, pthread_self());
+		printf("ID DO SEMAFORO: %lu, ID DA THREAD: %ld\n", (size_t)&mutex1, pthread_self());
 		sem_wait(&mutex1);
 		printf("T1 em execucao\n");
-		//printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)mutex1, pthread_self());
+		//printf("ID DO SEMAFORO: %lu, ID DA THREAD: %ld\n", (size_t)mutex1, pthread_self());
 		sem_wait(&mutex2);
 
 		sem_post(&mutex1);
@@ -30,10 +30,10 @@ void *thread1_func(void *arg){
 
 void *thread2_func(void *arg){
 	while(1){
-		printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)&mutex2, pthread_self());
+		printf("ID DO SEMAFORO: %lu, ID DA THREAD: %ld\n", (size_t)&mutex2, pthread_self());
 		sem_wait(&mutex2);
 		printf("T2 em execucao\n");
-		//printf("ID DO SEMAFORO: %lu, ID DA THREAD: %d\n", (size_t)mutex2, pthread_self());
+		//printf("ID DO SEMAFORO: %lu, ID DA THREAD: %ld\n", (size_t)mutex2, pthread_self());
 		sem_wait(&mutex1);
 
 		sem_post(&mutex1);
