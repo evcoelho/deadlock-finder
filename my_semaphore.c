@@ -27,15 +27,17 @@ typedef int TVertice;
 
 typedef int TAresta;
 
-typedef struct{
+typedef struct Cel TApontadorLista;
+
+typedef struct Cel{
     int vert;
-    struct TCelula *proximo;
+    TApontadorLista *proximo;
 }TCelula;
 
 typedef struct{
     int tamanho;
-    TCelula *primeiro;
-    TCelula *ultimo;
+    TApontadorLista *primeiro;
+    TApontadorLista *ultimo;
 }TLista;
 
 typedef struct{
@@ -49,13 +51,15 @@ typedef struct{
     int NArestas;
 }TGrafo;
 
+typedef struct Celula TApontadorPilha;
+
 typedef struct Celula{
     int item;
-    struct TCelulaPilha *proximo;
+   TApontadorPilha *proximo;
 }TCelulaPilha;
 
 typedef struct Pilha{
-    TCelulaPilha *topo;
+    TApontadorPilha *topo;
 }TPilha;
 
 //Global variables
@@ -219,6 +223,7 @@ int converteVertice(long valor_do_vertice){
     }
     quantidade_de_vertices++;
     vertices[i] = valor_do_vertice;
+    //printf("HASH %d\n", i);
     return i;
 }
 
@@ -227,18 +232,18 @@ int (*_sem_wait)(sem_t *) = NULL;
 
 int sem_wait(sem_t *sem) {
 	int r;
-  if (aux == 0){
-    aux = 1;
-    tgrafo_inicia(&grafo, MaxNumVertices);
-  }
+    if (aux == 0){
+        aux = 1;
+        tgrafo_inicia(&grafo, MaxNumVertices);
+    }
 	if (!_sem_wait) {
 		_sem_wait = dlsym(RTLD_NEXT, "sem_wait");
 		/* Irá apontar para o sem_wait original*/
 	}
-	if (temCiclo() == false) {
+	else if (temCiclo() == false) {
 		tgrafo_inserearesta(&grafo, converteVertice((size_t)sem), converteVertice(pthread_self()));
 		printf("\t Semaforo %ld na thread %ld\n", (size_t)sem, pthread_self());
-		printf("\t Dentro da sem_wait()... faça o que quiser aqui!\n");
+		//printf("\t Dentro da sem_wait()... faça o que quiser aqui!\n");
 		r = _sem_wait(sem);
 		return(r);
 	}else{
